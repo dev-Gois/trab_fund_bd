@@ -1,10 +1,37 @@
 SELECT * FROM User;
 
-SELECT * FROM Bank;
-
-SELECT * FROM Account;
 
 SELECT DISTINCT type FROM Account;
+
+
+SELECT 
+    User.name AS user_name,
+    Account.name AS account_name,
+    Transaction.description AS transaction_description,
+    Transaction.amount AS transaction_amount,
+    Transaction.type AS transaction_type
+FROM 
+    Transaction
+JOIN 
+    Account ON Transaction.account_id = Account.id
+JOIN 
+    User ON Account.user_id = User.id
+ORDER BY 
+    User.name, Account.name;
+
+SELECT name 
+FROM User
+WHERE id IN (
+    SELECT user_id
+    FROM Account
+    WHERE id IN (
+        SELECT account_id
+        FROM Transaction
+        WHERE amount > 1000
+    )
+);
+
+
 
 UPDATE Account
 SET
